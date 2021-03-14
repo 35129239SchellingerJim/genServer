@@ -13,12 +13,12 @@ from datetime import datetime
 from serverTests.data import ExpSet,PFit
 
 d=32*32
-n_samples=2000
+n_samples=20000
 n_features=d
 n_informative=int(0.3*d)
 n_redundant=int(0.2*d)
 n_repeated=int(0.2*d)
-n_classes=int(0.2*d)
+n_classes=int(10)
 n_clusters_per_class=1
 desc="test"
 
