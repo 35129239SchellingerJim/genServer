@@ -5,21 +5,24 @@ from sklearn.datasets import make_classification
 #import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 #from sklearn import preprocessing
+from sklearn.neighbors import KernelDensity
 from sklearn.pipeline import make_pipeline
 #from sklearn.preprocessing import StandardScaler
-from sklearn.mixture import GaussianMixture
+#from sklearn.mixture import GaussianMixture
 
 from datetime import datetime
 from serverTests.data import ExpSet,PFit
 
+
 d=32*32
-n_samples=20000
+n_samples=2000
 n_features=d
 n_informative=int(0.3*d)
 n_redundant=int(0.2*d)
 n_repeated=int(0.2*d)
-n_classes=int(0.2*d)
+n_classes=int(60)
 n_clusters_per_class=1
+class_sep=7
 desc="test"
 
 X, y = make_classification(n_samples=n_samples,
@@ -29,7 +32,8 @@ X, y = make_classification(n_samples=n_samples,
                            n_redundant=n_redundant,
                            n_repeated=n_repeated,
                            n_classes=n_classes,
-                           n_clusters_per_class=n_clusters_per_class)
+                           n_clusters_per_class=n_clusters_per_class,
+                           class_sep=class_sep)
 
 # Pipeline
 #from sklearn.metrics import accuracy_score
@@ -38,9 +42,10 @@ time_start = datetime.now()
 
 X_train, X_test, y_train, y_test = train_test_split(X, y,
                                                     random_state=0,
-                                                    test_size=0.3)
+                                                    test_size=0.2)
 
-pipe = make_pipeline(GaussianMixture(n_components=n_classes, random_state=0,max_iter=1000))  # standardisiere daten
+#pipe = make_pipeline(GaussianMixture(n_components=n_classes, random_state=0,max_iter=1000))  # standardisiere daten
+pipe = make_pipeline( KernelDensity(kernel='gaussian', bandwidth=0.5))  # standardisiere daten
 pipe.fit(X_train)
 
 p_scores = pipe.score(X_test, y_test)  # apply scaling on testing data, without leaking training data
@@ -67,4 +72,5 @@ exp.addPFit(PFit({'n_samples':n_samples,
                   'time':time_to_fit1,
                   'score':p_scores,
                   'desc':desc,
+                  'class_sep':class_sep,
                   }))
