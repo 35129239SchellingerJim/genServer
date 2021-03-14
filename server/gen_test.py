@@ -40,7 +40,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y,
                                                     random_state=0,
                                                     test_size=0.3)
 
-pipe = make_pipeline(GaussianMixture(n_components=n_classes, random_state=0))  # standardisiere daten
+pipe = make_pipeline(GaussianMixture(n_components=n_classes, random_state=0,max_iter=1000))  # standardisiere daten
 pipe.fit(X_train)
 
 p_scores = pipe.score(X_test, y_test)  # apply scaling on testing data, without leaking training data
