@@ -12,12 +12,13 @@ from sklearn.mixture import GaussianMixture
 from datetime import datetime
 from serverTests.data import ExpSet,PFit
 
+d=32*32
 n_samples=2000
-n_features=32*32
-n_informative=int(0.3*32*32)
-n_redundant=int(0.2*32*32)
-n_repeated=int(0.2*32*32)
-n_classes=4
+n_features=d
+n_informative=int(0.3*d)
+n_redundant=int(0.2*d)
+n_repeated=int(0.2*d)
+n_classes=int(0.2*d)
 n_clusters_per_class=1
 desc="test"
 
@@ -39,7 +40,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y,
                                                     random_state=0,
                                                     test_size=0.3)
 
-pipe = make_pipeline(GaussianMixture(n_components=4, random_state=0))  # standardisiere daten
+pipe = make_pipeline(GaussianMixture(n_components=n_classes, random_state=0))  # standardisiere daten
 pipe.fit(X_train)
 
 p_scores = pipe.score(X_test, y_test)  # apply scaling on testing data, without leaking training data
